@@ -13,14 +13,14 @@ CREATE TABLE categories(
 
 CREATE TABLE brands (
     brand_id INT PRIMARY KEY,
-    name VARCHAR(50) not null,
+    title VARCHAR(50) not null,
     description TEXT
 );
 
 CREATE TABLE shoes (
     id INT PRIMARY KEY,
     brand_id INT not null,
-    name VARCHAR(50),
+    title VARCHAR(50),
     description TEXT,
     price DECIMAL(10,2)
 );

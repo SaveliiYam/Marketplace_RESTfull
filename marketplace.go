@@ -12,3 +12,9 @@ type CategoriesList struct {
 	Id    int    `json:"id" db:"id"`
 	Title string `json:"title" binding:"required"`
 }
+
+type BrandsList struct {
+	Id          int    `json:"id" db:"id"`
+	Title       string `json:"title" binding:"required"`
+	Description string `json:"description" db:"description"`
+}

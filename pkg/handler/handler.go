@@ -32,21 +32,25 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				shoes.PUT("/:id")
 				shoes.POST("/")
+				shoes.DELETE("/:id")
 			}
 			cloth := v1.Group("/shoes")
 			{
 				cloth.PUT("/:id")
 				cloth.POST("/")
+				cloth.DELETE("/:id")
 			}
 			accessories := v1.Group("/accessories")
 			{
 				accessories.PUT("/:id")
 				accessories.POST("/")
+				accessories.DELETE("/:id")
 			}
 			brand := v1.Group("/brands")
 			{
 				brand.PUT("/:id")
 				brand.POST("/")
+				brand.DELETE("/:id")
 			}
 		}
 	}
@@ -59,7 +63,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			shoes := v1.Group("/shoes")
 			{
 				shoes.GET("/:id")
-				shoes.GET("/")
+				shoes.GET("/", h.getAllShoes)
 			}
 			cloth := v1.Group("/cloth")
 			{
@@ -74,7 +78,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			brand := v1.Group("/brands")
 			{
 				brand.GET("/:id")
-				brand.GET("/")
+				brand.GET("/", h.getAllBrands)
 			}
 		}
 	}
