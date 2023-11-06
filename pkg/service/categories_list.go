@@ -32,3 +32,7 @@ func (s *CategoriesListServise) Delete(id int) error {
 func (s *CategoriesListServise) Update(id int, input marketplace.CategoriesList) error {
 	return s.repo.Update(id, input)
 }
+
+func (s *CategoriesListServise) GetByString(input string) (int, error) {
+	return s.repo.GetByString(input)
+}

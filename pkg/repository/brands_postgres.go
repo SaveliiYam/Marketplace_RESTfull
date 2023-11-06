@@ -25,8 +25,8 @@ func (r *BrandsListRepository) GetAllBrands() ([]marketplace.BrandsList, error) 
 func (r *BrandsListRepository) GetById(id int) (marketplace.BrandsList, error) {
 	var brand marketplace.BrandsList
 
-	query := fmt.Sprintf("SELECT id, title, description FROM %s", brandsTable)
-	err := r.db.Get(&brand, query)
+	query := fmt.Sprintf("SELECT id, title, description FROM %s WHERE id=$1", brandsTable)
+	err := r.db.Get(&brand, query, id)
 	return brand, err
 }
 
@@ -55,4 +55,12 @@ func (r *BrandsListRepository) Update(id int, input marketplace.BrandsList) erro
 	query := fmt.Sprintf("UPDATE %s SET title=$1, description=$2 WHERE id=$3", brandsTable)
 	_, err := r.db.Exec(query, input.Title, input.Description, id)
 	return err
+}
+
+func (r *BrandsListRepository) GetByString(input string) (int, error) {
+	var brand marketplace.BrandsList
+
+	query := fmt.Sprintf("SELECT id, title FROM %s WHERE title=$1", brandsTable)
+	err := r.db.Get(&brand, query, input)
+	return brand.Id, err
 }

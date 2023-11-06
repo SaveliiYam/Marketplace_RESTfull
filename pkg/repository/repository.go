@@ -16,6 +16,7 @@ type Categories interface {
 	GetById(id int) (marketplace.CategoriesList, error)
 	Delete(id int) error
 	Update(id int, input marketplace.CategoriesList) error
+	GetByString(input string) (int, error)
 }
 
 type Brands interface {
@@ -24,12 +25,22 @@ type Brands interface {
 	Create(input marketplace.BrandsList) (int, error)
 	Delete(id int) error
 	Update(id int, input marketplace.BrandsList) error
+	GetByString(input string) (int, error)
+}
+
+type Products interface {
+	Create(input marketplace.ProductList, brandId, categoryId int) (int, error)
+	GetAll() ([]marketplace.ProductList, error)
+	Delete(id int) error
+	Update(id, brandId, categoryId int, input marketplace.ProductList) error
+	GetById(id int) (marketplace.ProductList, error)
 }
 
 type Repository struct {
 	Authorization
 	Categories
 	Brands
+	Products
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -37,5 +48,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Authorization: NewAuthPostgres(db),
 		Categories:    NewCategoryPostgres(db),
 		Brands:        NewBrandsPostgres(db),
+		Products:      NewProductsPostgres(db),
 	}
 }

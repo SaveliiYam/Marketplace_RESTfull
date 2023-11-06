@@ -30,3 +30,7 @@ func (s *BrandService) Delete(id int) error {
 func (s *BrandService) Update(id int, input marketplace.BrandsList) error {
 	return s.repo.Update(id, input)
 }
+
+func (s *BrandService) GetByString(input string) (int, error) {
+	return s.repo.GetByString(input)
+}

@@ -43,21 +43,15 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				brand.POST("/", h.createBrand)
 				brand.DELETE("/:id", h.deleteBrand)
 			}
+			product := v1.Group("/products")
+			{
+				product.GET("/", h.getProducts)
+				product.GET("/:id", h.getProductById)
+				product.PUT("/:id", h.updateProduct)
+				product.POST("/", h.createProduct)
+				product.DELETE("/:id", h.deleteProduct)
+			}
 		}
 	}
-	// api := router.Group("/api")
-	// {
-	// 	v1 := api.Group("/v1")
-	// 	{
-	// 		v1.GET("/categories", h.getCategories)
-
-	// 		brand := v1.Group("/brands")
-	// 		{
-	// 			brand.GET("/:id", h.getBrandById)
-	// 			brand.GET("/", h.getAllBrands)
-	// 		}
-	// 	}
-	// }
-
 	return router
 }

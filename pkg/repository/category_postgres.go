@@ -58,3 +58,11 @@ func (r *CategoriesPostgres) Update(id int, input marketplace.CategoriesList) er
 	_, err := r.db.Exec(query, input.Title, id)
 	return err
 }
+
+func (r *CategoriesPostgres) GetByString(input string) (int, error) {
+	var category marketplace.CategoriesList
+
+	query := fmt.Sprintf("SELECT id, title FROM %s WHERE title=$1", categoriesTable)
+	err := r.db.Get(&category, query, input)
+	return category.Id, err
+}
