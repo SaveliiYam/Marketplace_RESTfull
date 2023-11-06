@@ -20,7 +20,10 @@ type Categories interface {
 
 type Brands interface {
 	GetAllBrands() ([]marketplace.BrandsList, error)
-	GetBrandById(id int) (marketplace.BrandsList, error)
+	GetById(id int) (marketplace.BrandsList, error)
+	Create(input marketplace.BrandsList) (int, error)
+	Delete(id int) error
+	Update(id int, input marketplace.BrandsList) error
 }
 
 type Service struct {
