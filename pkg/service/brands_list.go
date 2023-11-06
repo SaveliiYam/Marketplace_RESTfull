@@ -16,3 +16,7 @@ func NewBrandService(repo repository.Brands) *BrandService {
 func (s *BrandService) GetAllBrands() ([]marketplace.BrandsList, error) {
 	return s.repo.GetAllBrands()
 }
+
+func (s *BrandService) GetBrandById(id int) (marketplace.BrandsList, error) {
+	return s.repo.GetById(id)
+}

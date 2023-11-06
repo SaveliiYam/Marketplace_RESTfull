@@ -26,62 +26,38 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		v1 := admin.Group("/v1")
 		{
-			v1.GET("/categories", h.getCategories)
+			categories := v1.Group("/categories")
+			{
+				categories.GET("/", h.getCategories)
+				categories.GET("/:id", h.getCategoriesById)
+				categories.POST("/", h.createCategories)
+				categories.PUT("/:id", h.updateCategory)
+				categories.DELETE("/:id", h.deleteCategory)
+			}
 
-			shoes := v1.Group("/shoes")
-			{
-				shoes.PUT("/:id")
-				shoes.POST("/")
-				shoes.DELETE("/:id")
-			}
-			cloth := v1.Group("/shoes")
-			{
-				cloth.PUT("/:id")
-				cloth.POST("/")
-				cloth.DELETE("/:id")
-			}
-			accessories := v1.Group("/accessories")
-			{
-				accessories.PUT("/:id")
-				accessories.POST("/")
-				accessories.DELETE("/:id")
-			}
-			brand := v1.Group("/brands")
-			{
-				brand.PUT("/:id")
-				brand.POST("/")
-				brand.DELETE("/:id")
-			}
+			// brand := v1.Group("/brands")
+			// {
+			// 	brand.GET("/:id", h.getBrandById)
+			// 	brand.GET("/", h.getAllBrands)
+			// 	brand.PUT("/:id")
+			// 	brand.POST("/")
+			// 	brand.DELETE("/:id")
+			// }
 		}
 	}
-	api := router.Group("/api")
-	{
-		v1 := api.Group("/v1")
-		{
-			v1.GET("/categories", h.getCategories)
+	// api := router.Group("/api")
+	// {
+	// 	v1 := api.Group("/v1")
+	// 	{
+	// 		v1.GET("/categories", h.getCategories)
 
-			shoes := v1.Group("/shoes")
-			{
-				shoes.GET("/:id")
-				shoes.GET("/", h.getAllShoes)
-			}
-			cloth := v1.Group("/cloth")
-			{
-				cloth.GET("/:id")
-				cloth.GET("/")
-			}
-			accessories := v1.Group("/accessories")
-			{
-				accessories.GET("/:id")
-				accessories.GET("/")
-			}
-			brand := v1.Group("/brands")
-			{
-				brand.GET("/:id")
-				brand.GET("/", h.getAllBrands)
-			}
-		}
-	}
+	// 		brand := v1.Group("/brands")
+	// 		{
+	// 			brand.GET("/:id", h.getBrandById)
+	// 			brand.GET("/", h.getAllBrands)
+	// 		}
+	// 	}
+	// }
 
 	return router
 }

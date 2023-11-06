@@ -1,9 +1,8 @@
 DROP TABLE users;
 
-DROP TABLE Brands;
+DROP TABLE products;
 
-DROP TABLE Shoes;
+DROP TABLE brands;
 
-DROP TABLE Cloth;
+DROP TABLE categories;
 
-DROP TABLE Accessories;

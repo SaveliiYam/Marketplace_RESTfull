@@ -12,20 +12,20 @@ type Authorization interface {
 }
 type Categories interface {
 	GetAllCategories() ([]marketplace.CategoriesList, error)
-}
-
-type Shoes interface {
-	GetAllShoes() ([]marketplace.ProductList, error)
+	Create(input marketplace.CategoriesList) (int, error)
+	GetById(id int) (marketplace.CategoriesList, error)
+	Delete(id int) error
+	Update(id int, input marketplace.CategoriesList) error
 }
 
 type Brands interface {
 	GetAllBrands() ([]marketplace.BrandsList, error)
+	GetBrandById(id int) (marketplace.BrandsList, error)
 }
 
 type Service struct {
 	Authorization
 	Categories
-	Shoes
 	Brands
 }
 
@@ -33,7 +33,6 @@ func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Categories:    NewCategoriesService(repos.Categories),
-		Shoes:         NewShoesService(repos.Shoes),
 		Brands:        NewBrandService(repos.Brands),
 	}
 }
