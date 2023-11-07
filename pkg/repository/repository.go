@@ -36,11 +36,17 @@ type Products interface {
 	GetById(id int) (marketplace.ProductList, error)
 }
 
+type Basket interface {
+	GetAll(id int) ([]marketplace.BusketList, error)
+	Create(userId int, input marketplace.BusketList) (int, error)
+}
+
 type Repository struct {
 	Authorization
 	Categories
 	Brands
 	Products
+	Basket
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -49,5 +55,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Categories:    NewCategoryPostgres(db),
 		Brands:        NewBrandsPostgres(db),
 		Products:      NewProductsPostgres(db),
+		Basket:        NewBasketPostgres(db),
 	}
 }

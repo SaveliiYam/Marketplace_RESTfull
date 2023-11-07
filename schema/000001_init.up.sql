@@ -25,3 +25,9 @@ CREATE TABLE products(
     brand_id INTEGER REFERENCES brands (id) on delete cascade not null,
     categories_id INTEGER REFERENCES categories (id) on delete cascade not null
 );
+
+CREATE TABLE baskets(
+    id serial PRIMARY KEY,
+    user_id INTEGER REFERENCES users (id) on delete cascade not null,
+    product_id INTEGER REFERENCES products (id) on delete cascade not null
+);

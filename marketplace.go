@@ -19,3 +19,9 @@ type BrandsList struct {
 	Title       string `json:"title" binding:"required"`
 	Description string `json:"description" db:"description"`
 }
+
+type BusketList struct {
+	Id        int `json:"id" db:"id"`
+	UserId    int `json:"user_id" db:"user_id"`
+	ProductId int `json:"product_id" db:"product_id" binding:"required"`
+}

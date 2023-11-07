@@ -1,3 +1,5 @@
+DROP TABLE baskets;
+
 DROP TABLE users;
 
 DROP TABLE products;

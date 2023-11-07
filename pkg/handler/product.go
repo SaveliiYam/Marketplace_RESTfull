@@ -17,11 +17,13 @@ func (h *Handler) createProduct(c *gin.Context) {
 
 	brandId, err := h.services.Brands.GetByString(input.Brand)
 	if err != nil {
-
+		NewErrorResponse(c, http.StatusInternalServerError, "have not this brand") // Если нет указанного бренда
+		return
 	}
 	categoriesId, err := h.services.Categories.GetByString(input.Category)
 	if err != nil {
-
+		NewErrorResponse(c, http.StatusInternalServerError, "have not this category") // Если нет указанной категории
+		return
 	}
 
 	id, err := h.services.Products.Create(input, brandId, categoriesId)
@@ -100,11 +102,13 @@ func (h *Handler) updateProduct(c *gin.Context) {
 
 	brandId, err := h.services.Brands.GetByString(input.Brand)
 	if err != nil {
-
+		NewErrorResponse(c, http.StatusInternalServerError, "have not this brand") // Если нет указанного бренда
+		return
 	}
 	categoriesId, err := h.services.Categories.GetByString(input.Category)
 	if err != nil {
-
+		NewErrorResponse(c, http.StatusInternalServerError, "have not this category") // Если нет указанной категории
+		return
 	}
 
 	if err := h.services.Products.Update(id, brandId, categoriesId, input); err != nil {

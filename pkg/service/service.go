@@ -36,11 +36,17 @@ type Products interface {
 	GetById(id int) (marketplace.ProductList, error)
 }
 
+type Basket interface {
+	GetAll(id int) ([]marketplace.BusketList, error)
+	Create(userId int, input marketplace.BusketList) (int, error)
+}
+
 type Service struct {
 	Authorization
 	Categories
 	Brands
 	Products
+	Basket
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -49,5 +55,6 @@ func NewService(repos *repository.Repository) *Service {
 		Categories:    NewCategoriesService(repos.Categories),
 		Brands:        NewBrandService(repos.Brands),
 		Products:      NewProductsService(repos.Products),
+		Basket:        NewBasketService(repos.Basket),
 	}
 }
