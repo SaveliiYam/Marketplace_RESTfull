@@ -19,3 +19,10 @@ func (s *BasketService) GetAll(id int) ([]marketplace.BusketList, error) {
 func (s *BasketService) Create(userId int, input marketplace.BusketList) (int, error) {
 	return s.repo.Create(userId, input)
 }
+
+func (s *BasketService) GetById(userId, basketId int) (marketplace.BusketList, error) {
+	return s.repo.GetById(userId, basketId)
+}
+func (s *BasketService) Delete(userId, basketId int) error {
+	return s.repo.Delete(userId, basketId)
+}

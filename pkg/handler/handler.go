@@ -53,8 +53,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			}
 			basket := v1.Group("/basket", h.userIdentity)
 			{
-				basket.GET("/", h.getBasket)
+				basket.GET("/", h.getAllBasket)
+				basket.GET("/:id", h.getBasketById)
 				basket.POST("/", h.createBasket)
+				basket.DELETE("/:id", h.deleteBasket)
 			}
 		}
 	}

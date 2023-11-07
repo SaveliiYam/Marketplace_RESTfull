@@ -39,6 +39,8 @@ type Products interface {
 type Basket interface {
 	GetAll(id int) ([]marketplace.BusketList, error)
 	Create(userId int, input marketplace.BusketList) (int, error)
+	GetById(userId, basketId int) (marketplace.BusketList, error)
+	Delete(userId, basketId int) error
 }
 
 type Service struct {

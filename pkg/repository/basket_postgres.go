@@ -38,3 +38,16 @@ func (r *BasketListRepository) Create(userId int, input marketplace.BusketList) 
 	}
 	return id, tx.Commit()
 }
+
+func (r *BasketListRepository) GetById(userId, basketId int) (marketplace.BusketList, error) {
+	var basket marketplace.BusketList
+
+	query := fmt.Sprintf("SELECT id, user_id, product_id FROM %s WHERE user_id=$1 AND id=$2", basketsTable)
+	err := r.db.Get(&basket, query, userId, basketId)
+	return basket, err
+}
+func (r *BasketListRepository) Delete(userId, basketId int) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1 AND user_id=$2", basketsTable)
+	_, err := r.db.Exec(query, basketId, userId)
+	return err
+}
