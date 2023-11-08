@@ -36,6 +36,9 @@ func (s *AuthService) CreateUser(user marketplace.User) (int, error) {
 }
 
 func (s *AuthService) GenerateToken(username, password string) (string, error) {
+	if username == "" || password == "" {
+		return "", errors.New("invalid input body")
+	}
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
 		return "", err

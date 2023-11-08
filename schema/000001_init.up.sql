@@ -32,6 +32,8 @@ CREATE TABLE baskets(
     product_id INTEGER REFERENCES products (id) on delete cascade not null
 );
 
+INSERT INTO users (name, username, password_hash) values ('name', 'username')
+
 INSERT INTO brands (title) values ('Nike');
 INSERT INTO brands (title) values ('Adidas');
 INSERT INTO brands (title) values ('Gucci');
