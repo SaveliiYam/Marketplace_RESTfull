@@ -9,6 +9,15 @@ import (
 )
 
 func (h *Handler) createProduct(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	var input marketplace.ProductList
 	if err := c.BindJSON(&input); err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -70,6 +79,15 @@ func (h *Handler) getProductById(c *gin.Context) {
 }
 
 func (h *Handler) deleteProduct(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
@@ -88,6 +106,15 @@ func (h *Handler) deleteProduct(c *gin.Context) {
 }
 
 func (h *Handler) updateProduct(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")

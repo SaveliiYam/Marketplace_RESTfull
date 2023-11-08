@@ -3,7 +3,8 @@ CREATE TABLE users
     id serial PRIMARY KEY not null,
     name varchar(255) not null,
     username varchar(255) not null unique,
-    password_hash varchar(255) not null
+    password_hash varchar(255) not null,
+    status boolean default false
 );
 
 CREATE TABLE categories(
@@ -32,7 +33,6 @@ CREATE TABLE baskets(
     product_id INTEGER REFERENCES products (id) on delete cascade not null
 );
 
-INSERT INTO users (name, username, password_hash) values ('name', 'username')
 
 INSERT INTO brands (title) values ('Nike');
 INSERT INTO brands (title) values ('Adidas');

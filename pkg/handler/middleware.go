@@ -11,6 +11,7 @@ import (
 const (
 	authorizationHeader = "Authorization"
 	userCtx             = "userId"
+	userStatus          = "status"
 )
 
 func (h *Handler) userIdentity(c *gin.Context) {
@@ -21,8 +22,13 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	}
 
 	headerParts := strings.Split(header, " ")
-	if len(headerParts) != 2 {
+	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
 		NewErrorResponse(c, http.StatusUnauthorized, "invalid auth header")
+		return
+	}
+
+	if len(headerParts[1]) == 0 {
+		NewErrorResponse(c, http.StatusUnauthorized, "token is empty")
 		return
 	}
 
@@ -32,21 +38,36 @@ func (h *Handler) userIdentity(c *gin.Context) {
 		return
 	}
 
+	status, err := h.services.Authorization.CheckStatus(userId)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
+		return
+	}
+
+	c.Set(userStatus, status)
 	c.Set(userCtx, userId)
 }
 
 func getUserId(c *gin.Context) (int, error) {
 	id, ok := c.Get(userCtx)
 	if !ok {
-		NewErrorResponse(c, http.StatusInternalServerError, "user id not found")
 		return 0, errors.New("user id not found")
 	}
 
-	IdInt, ok := id.(int)
+	idInt, ok := id.(int)
 	if !ok {
-		NewErrorResponse(c, http.StatusInternalServerError, "user id not found")
-		return 0, errors.New("user id not found")
+		return 0, errors.New("user id is of invalid type")
 	}
 
-	return IdInt, nil
+	return idInt, nil
+}
+
+func checkStatus(c *gin.Context) (bool, error) {
+	status, ok := c.Get(userStatus)
+	if !ok {
+		return false, errors.New("user status undefined")
+	}
+	statusBool, _ := status.(bool)
+
+	return statusBool, nil
 }

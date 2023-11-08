@@ -11,6 +11,7 @@ type Authorization interface {
 	CreateUser(marketplace.User) (int, error)
 	GenerateToken(username, password string) (string, error)
 	ParseToken(token string) (int, error)
+	CheckStatus(userId int) (bool, error)
 }
 type Categories interface {
 	GetAllCategories() ([]marketplace.CategoriesList, error)

@@ -9,6 +9,7 @@ import (
 type Authorization interface {
 	CreateUser(marketplace.User) (int, error)
 	GetUser(username, password string) (marketplace.User, error)
+	CheckStatus(userId int) (bool, error)
 }
 type Categories interface {
 	GetAllCategories() ([]marketplace.CategoriesList, error)

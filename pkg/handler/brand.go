@@ -41,6 +41,15 @@ func (h *Handler) getById(c *gin.Context) {
 }
 
 func (h *Handler) createBrand(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	var brand marketplace.BrandsList
 	if err := c.BindJSON(&brand); err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -57,6 +66,15 @@ func (h *Handler) createBrand(c *gin.Context) {
 }
 
 func (h *Handler) deleteBrand(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
@@ -75,6 +93,15 @@ func (h *Handler) deleteBrand(c *gin.Context) {
 }
 
 func (h *Handler) updateBrand(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")

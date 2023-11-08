@@ -34,6 +34,21 @@ func (m *MockAuthorization) EXPECT() *MockAuthorizationMockRecorder {
 	return m.recorder
 }
 
+// CheckStatus mocks base method.
+func (m *MockAuthorization) CheckStatus(userId int) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckStatus", userId)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckStatus indicates an expected call of CheckStatus.
+func (mr *MockAuthorizationMockRecorder) CheckStatus(userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckStatus", reflect.TypeOf((*MockAuthorization)(nil).CheckStatus), userId)
+}
+
 // CreateUser mocks base method.
 func (m *MockAuthorization) CreateUser(arg0 marketplace.User) (int, error) {
 	m.ctrl.T.Helper()

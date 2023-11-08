@@ -41,6 +41,15 @@ func (h *Handler) getCategoriesById(c *gin.Context) {
 }
 
 func (h *Handler) createCategories(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	var category marketplace.CategoriesList
 	if err := c.BindJSON(&category); err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -57,6 +66,15 @@ func (h *Handler) createCategories(c *gin.Context) {
 }
 
 func (h *Handler) deleteCategory(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
@@ -75,6 +93,15 @@ func (h *Handler) deleteCategory(c *gin.Context) {
 }
 
 func (h *Handler) updateCategory(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
