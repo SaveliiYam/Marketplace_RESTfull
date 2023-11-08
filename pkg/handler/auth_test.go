@@ -126,6 +126,19 @@ func TestHandler_signIn(t *testing.T) {
 			mockBehavior:       func(r *mock_service.MockAuthorization, user marketplace.User) {},
 			expectedStatusCode: 400,
 		},
+		{
+			name:      "Service Error",
+			inputBody: `{"username": "username", "name": "name", "password": "password"}`,
+			inputUser: marketplace.User{
+				Username: "username",
+				Name:     "name",
+				Password: "password",
+			},
+			mockBehavior: func(r *mock_service.MockAuthorization, user marketplace.User) {
+				r.EXPECT().GenerateToken(user.Username, user.Password).Return("", errors.New("something went wrong"))
+			},
+			expectedStatusCode: 500,
+		},
 	}
 
 	for _, testCase := range tests {
