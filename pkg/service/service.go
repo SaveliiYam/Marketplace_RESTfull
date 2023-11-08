@@ -5,6 +5,8 @@ import (
 	"marketplace/pkg/repository"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Authorization interface {
 	CreateUser(marketplace.User) (int, error)
 	GenerateToken(username, password string) (string, error)
