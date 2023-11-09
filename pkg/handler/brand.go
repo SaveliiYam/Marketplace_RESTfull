@@ -15,7 +15,7 @@ type getAllBrandsData struct {
 func (h *Handler) getAllBrands(c *gin.Context) {
 	brands, err := h.services.Brands.GetAllBrands()
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 
@@ -33,7 +33,7 @@ func (h *Handler) getById(c *gin.Context) {
 
 	brand, err := h.services.Brands.GetById(id)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 

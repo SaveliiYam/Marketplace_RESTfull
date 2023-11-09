@@ -28,7 +28,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			categories := v1.Group("/categories")
 			{
-				categories.GET("/", h.getCategories)
+				categories.GET("/", h.getAllCategories)
 				categories.GET("/:id", h.getCategoriesById)
 				categories.POST("/", h.createCategories, h.userIdentity)
 				categories.PUT("/:id", h.updateCategory, h.userIdentity)

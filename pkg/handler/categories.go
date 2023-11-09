@@ -12,10 +12,10 @@ type getAllCategoriesData struct {
 	Data []marketplace.CategoriesList `json:"data"`
 }
 
-func (h *Handler) getCategories(c *gin.Context) {
+func (h *Handler) getAllCategories(c *gin.Context) {
 	categories, err := h.services.Categories.GetAllCategories()
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 
@@ -27,13 +27,13 @@ func (h *Handler) getCategories(c *gin.Context) {
 func (h *Handler) getCategoriesById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
 	category, err := h.services.Categories.GetById(id)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 
