@@ -52,12 +52,18 @@ func (h *Handler) createCategories(c *gin.Context) {
 
 	var category marketplace.CategoriesList
 	if err := c.BindJSON(&category); err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "invalid params")
 		return
 	}
+
+	if _, err := h.services.Categories.GetByString(category.Title); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "already exist")
+		return
+	}
+
 	id, err := h.services.Categories.Create(category)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{

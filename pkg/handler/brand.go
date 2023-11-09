@@ -55,6 +55,12 @@ func (h *Handler) createBrand(c *gin.Context) {
 		NewErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+
+	if _, err := h.services.Brands.GetByString(brand.Title); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "already exist")
+		return
+	}
+
 	id, err := h.services.Brands.Create(brand)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, err.Error())

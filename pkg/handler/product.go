@@ -53,7 +53,7 @@ type getAllProductsData struct {
 func (h *Handler) getProducts(c *gin.Context) {
 	products, err := h.services.Products.GetAll()
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 
@@ -71,7 +71,7 @@ func (h *Handler) getProductById(c *gin.Context) {
 
 	product, err := h.services.Products.GetById(id)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong")
 		return
 	}
 
