@@ -43,7 +43,7 @@ func (h *Handler) getById(c *gin.Context) {
 func (h *Handler) createBrand(c *gin.Context) {
 	userStatus, err := checkStatus(c)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if !userStatus {
@@ -56,7 +56,7 @@ func (h *Handler) createBrand(c *gin.Context) {
 		return
 	}
 
-	if _, err := h.services.Brands.GetByString(brand.Title); err != nil {
+	if _, err := h.services.Brands.GetByString(brand.Title); err == nil {
 		NewErrorResponse(c, http.StatusBadRequest, "already exist")
 		return
 	}

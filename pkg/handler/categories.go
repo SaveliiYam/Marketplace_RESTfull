@@ -43,7 +43,7 @@ func (h *Handler) getCategoriesById(c *gin.Context) {
 func (h *Handler) createCategories(c *gin.Context) {
 	userStatus, err := checkStatus(c)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	if !userStatus {
@@ -56,7 +56,7 @@ func (h *Handler) createCategories(c *gin.Context) {
 		return
 	}
 
-	if _, err := h.services.Categories.GetByString(category.Title); err != nil {
+	if _, err := h.services.Categories.GetByString(category.Title); err == nil {
 		NewErrorResponse(c, http.StatusBadRequest, "already exist")
 		return
 	}
