@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	imageupload "github.com/olahol/go-imageupload"
 )
 
 // MockAuthorization is a mock of Authorization interface.
@@ -132,6 +133,20 @@ func (mr *MockCategoriesMockRecorder) Create(input interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCategories)(nil).Create), input)
 }
 
+// CreateImage mocks base method.
+func (m *MockCategories) CreateImage(id int, image_thumb *imageupload.Image) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateImage", id, image_thumb)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateImage indicates an expected call of CreateImage.
+func (mr *MockCategoriesMockRecorder) CreateImage(id, image_thumb interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateImage", reflect.TypeOf((*MockCategories)(nil).CreateImage), id, image_thumb)
+}
+
 // Delete mocks base method.
 func (m *MockCategories) Delete(id int) error {
 	m.ctrl.T.Helper()
@@ -191,6 +206,21 @@ func (mr *MockCategoriesMockRecorder) GetByString(input interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByString", reflect.TypeOf((*MockCategories)(nil).GetByString), input)
 }
 
+// GetImage mocks base method.
+func (m *MockCategories) GetImage(id int) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImage", id)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImage indicates an expected call of GetImage.
+func (mr *MockCategoriesMockRecorder) GetImage(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImage", reflect.TypeOf((*MockCategories)(nil).GetImage), id)
+}
+
 // Update mocks base method.
 func (m *MockCategories) Update(id int, input marketplace.CategoriesList) error {
 	m.ctrl.T.Helper()
@@ -241,6 +271,20 @@ func (m *MockBrands) Create(input marketplace.BrandsList) (int, error) {
 func (mr *MockBrandsMockRecorder) Create(input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockBrands)(nil).Create), input)
+}
+
+// CreateImage mocks base method.
+func (m *MockBrands) CreateImage(id int, image_thumb *imageupload.Image) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateImage", id, image_thumb)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateImage indicates an expected call of CreateImage.
+func (mr *MockBrandsMockRecorder) CreateImage(id, image_thumb interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateImage", reflect.TypeOf((*MockBrands)(nil).CreateImage), id, image_thumb)
 }
 
 // Delete mocks base method.
@@ -302,6 +346,21 @@ func (mr *MockBrandsMockRecorder) GetByString(input interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByString", reflect.TypeOf((*MockBrands)(nil).GetByString), input)
 }
 
+// GetImage mocks base method.
+func (m *MockBrands) GetImage(id int) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImage", id)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImage indicates an expected call of GetImage.
+func (mr *MockBrandsMockRecorder) GetImage(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImage", reflect.TypeOf((*MockBrands)(nil).GetImage), id)
+}
+
 // Update mocks base method.
 func (m *MockBrands) Update(id int, input marketplace.BrandsList) error {
 	m.ctrl.T.Helper()
@@ -354,6 +413,20 @@ func (mr *MockProductsMockRecorder) Create(input, brandId, categoryId interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockProducts)(nil).Create), input, brandId, categoryId)
 }
 
+// CreateImage mocks base method.
+func (m *MockProducts) CreateImage(id int, image_thumb *imageupload.Image) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateImage", id, image_thumb)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateImage indicates an expected call of CreateImage.
+func (mr *MockProductsMockRecorder) CreateImage(id, image_thumb interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateImage", reflect.TypeOf((*MockProducts)(nil).CreateImage), id, image_thumb)
+}
+
 // Delete mocks base method.
 func (m *MockProducts) Delete(id int) error {
 	m.ctrl.T.Helper()
@@ -396,6 +469,21 @@ func (m *MockProducts) GetById(id int) (marketplace.ProductList, error) {
 func (mr *MockProductsMockRecorder) GetById(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetById", reflect.TypeOf((*MockProducts)(nil).GetById), id)
+}
+
+// GetImage mocks base method.
+func (m *MockProducts) GetImage(id int) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetImage", id)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImage indicates an expected call of GetImage.
+func (mr *MockProductsMockRecorder) GetImage(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImage", reflect.TypeOf((*MockProducts)(nil).GetImage), id)
 }
 
 // Update mocks base method.

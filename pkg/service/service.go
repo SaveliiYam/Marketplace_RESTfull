@@ -3,6 +3,8 @@ package service
 import (
 	"marketplace"
 	"marketplace/pkg/repository"
+
+	"github.com/olahol/go-imageupload"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/mock.go
@@ -20,6 +22,8 @@ type Categories interface {
 	Delete(id int) error
 	Update(id int, input marketplace.CategoriesList) error
 	GetByString(input string) (int, error)
+	CreateImage(id int, image_thumb *imageupload.Image) error
+	GetImage(id int) (string, error)
 }
 
 type Brands interface {
@@ -29,6 +33,8 @@ type Brands interface {
 	Delete(id int) error
 	Update(id int, input marketplace.BrandsList) error
 	GetByString(input string) (int, error)
+	CreateImage(id int, image_thumb *imageupload.Image) error
+	GetImage(id int) (string, error)
 }
 
 type Products interface {
@@ -37,6 +43,8 @@ type Products interface {
 	Delete(id int) error
 	Update(id, brandId, categoriesId int, input marketplace.ProductList) error
 	GetById(id int) (marketplace.ProductList, error)
+	CreateImage(id int, image_thumb *imageupload.Image) error
+	GetImage(id int) (string, error)
 }
 
 type Basket interface {

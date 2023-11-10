@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/olahol/go-imageupload"
 )
 
 type getAllCategoriesData struct {
@@ -126,4 +127,56 @@ func (h *Handler) updateCategory(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, statusResponse{"ok"})
+}
+
+func (h *Handler) createCategoriesImage(c *gin.Context) {
+	userStatus, err := checkStatus(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
+		return
+	}
+	if !userStatus {
+		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		return
+	}
+
+	img, err := imageupload.Process(c.Request, "file")
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	thumb, err := imageupload.ThumbnailPNG(img, 500, 500)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.services.Categories.CreateImage(id, thumb)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
+}
+
+func (h *Handler) getCategoriesImage(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		return
+	}
+	image, err := h.services.Categories.GetImage(id)
+	if err != nil {
+		NewErrorResponse(c, http.StatusNotFound, err.Error())
+		return
+	}
+	c.File(image)
+
 }
