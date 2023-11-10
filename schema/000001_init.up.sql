@@ -34,11 +34,11 @@ CREATE TABLE baskets(
 );
 
 
-INSERT INTO brands (title) values ('Nike');
-INSERT INTO brands (title) values ('Adidas');
-INSERT INTO brands (title) values ('Gucci');
+-- INSERT INTO brands (title) values ('Nike');
+-- INSERT INTO brands (title) values ('Adidas');
+-- INSERT INTO brands (title) values ('Gucci');
 
-INSERT INTO categories (title) values ('Спортивная обувь');
-INSERT INTO categories (title) values ('Летняя обувь');
-INSERT INTO categories (title) values ('Зимняя обувь')
+-- INSERT INTO categories (title) values ('Спортивная обувь');
+-- INSERT INTO categories (title) values ('Летняя обувь');
+-- INSERT INTO categories (title) values ('Зимняя обувь');
 

@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  market-app:
+    build: ./
+    command: ./wait_for_postgres.sh db ./market-app
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=662011Egor
+
+  db: 
+    restart: always
+    image: ubuntu/postgres:14-22.04_beta 
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=662011Egor
+    ports:
+      - 30432:5432

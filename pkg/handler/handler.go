@@ -33,20 +33,20 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				{
 					categories.GET("/", h.getAllCategories)
 					categories.GET("/:id", h.getCategoriesById)
-					categories.GET("/:id/image", h.getCategoriesImage)
+					categories.GET("/image/:id", h.getCategoriesImage)
 				}
 
 				brand := user.Group("/brands")
 				{
 					brand.GET("/:id", h.getById)
 					brand.GET("/", h.getAllBrands)
-					brand.GET("/:id/image", h.getBrandsImage)
+					brand.GET("/image/:id", h.getBrandsImage)
 				}
 				product := user.Group("/products")
 				{
 					product.GET("/", h.getProducts)
 					product.GET("/:id", h.getProductById)
-					product.GET(":/id/image", h.getProductImage)
+					product.GET("/image/:id", h.getProductImage)
 				}
 				basket := user.Group("/basket", h.userIdentity)
 				{
@@ -62,9 +62,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				{
 					categories.GET("/", h.getAllCategories)
 					categories.GET("/:id", h.getCategoriesById)
-					categories.GET("/:id/image", h.getCategoriesImage)
+					categories.GET("/image/:id", h.getCategoriesImage)
 					categories.POST("/", h.createCategories)
-					categories.POST("/:id/upload", h.createCategoriesImage)
+					categories.POST("/upload/:id", h.createCategoriesImage)
 					categories.PUT("/:id", h.updateCategory)
 					categories.DELETE("/:id", h.deleteCategory)
 				}
@@ -73,20 +73,20 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				{
 					brand.GET("/:id", h.getById)
 					brand.GET("/", h.getAllBrands)
-					brand.GET("/:id/image", h.getBrandsImage)
+					brand.GET("/image/:id", h.getBrandsImage)
 					brand.PUT("/:id", h.updateBrand)
 					brand.POST("/", h.createBrand)
-					brand.POST("/:id/upload", h.createBrandsImage)
+					brand.POST("/upload/:id", h.createBrandsImage)
 					brand.DELETE("/:id", h.deleteBrand)
 				}
 				product := admin.Group("/products", h.userIdentity)
 				{
 					product.GET("/", h.getProducts)
 					product.GET("/:id", h.getProductById)
-					product.GET(":/id/image", h.getProductImage)
+					product.GET("image/:id", h.getProductImage)
 					product.PUT("/:id", h.updateProduct)
 					product.POST("/", h.createProduct)
-					product.POST(":/id/image", h.createProductImage)
+					product.POST("/image:id", h.createProductImage)
 					product.DELETE("/:id", h.deleteProduct)
 				}
 				basket := admin.Group("/basket", h.userIdentity)
