@@ -49,11 +49,12 @@ func (h *Handler) createBrand(c *gin.Context) {
 	}
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	var brand marketplace.BrandsList
 	if err := c.BindJSON(&brand); err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		NewErrorResponse(c, http.StatusBadRequest, "invalid brand param")
 		return
 	}
 
