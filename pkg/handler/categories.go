@@ -42,13 +42,10 @@ func (h *Handler) getCategoriesById(c *gin.Context) {
 }
 
 func (h *Handler) createCategories(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	var category marketplace.CategoriesList
@@ -73,11 +70,7 @@ func (h *Handler) createCategories(c *gin.Context) {
 }
 
 func (h *Handler) deleteCategory(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
 	}
@@ -100,11 +93,7 @@ func (h *Handler) deleteCategory(c *gin.Context) {
 }
 
 func (h *Handler) updateCategory(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
 	}
@@ -130,11 +119,7 @@ func (h *Handler) updateCategory(c *gin.Context) {
 }
 
 func (h *Handler) createCategoriesImage(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
 	}

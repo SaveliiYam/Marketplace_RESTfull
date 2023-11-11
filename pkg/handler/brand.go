@@ -73,6 +73,7 @@ func (h *Handler) deleteBrand(c *gin.Context) {
 	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
@@ -83,7 +84,7 @@ func (h *Handler) deleteBrand(c *gin.Context) {
 
 	err = h.services.Brands.Delete(id)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "this brand not exists")
 		return
 	}
 
@@ -96,6 +97,7 @@ func (h *Handler) updateBrand(c *gin.Context) {
 	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
@@ -122,6 +124,7 @@ func (h *Handler) createBrandsImage(c *gin.Context) {
 	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))

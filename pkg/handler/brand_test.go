@@ -14,6 +14,191 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestHandler_deleteBrand(t *testing.T) {
+	type mockBehavior func(r *mock_service.MockBrands, id int)
+	type authBehavior func(r *mock_service.MockAuthorization, user marketplace.User)
+	type tokenBehavior func(r *mock_service.MockAuthorization, token string)
+
+	tests := []struct {
+		name string
+
+		inputAuthBody string
+		inputUser     marketplace.User
+		authBehavior  authBehavior
+
+		headerName    string
+		headerValue   string
+		token         string
+		id            int
+		tokenBehavior tokenBehavior
+
+		idBrand      int
+		mockBehavior mockBehavior
+
+		expectedStatusCode   int
+		expectedResponseBody string
+		uri                  string
+	}{
+		{
+			name:          "OK",
+			inputAuthBody: `{"username": "username", "name": "name", "password": "password", "status":true}`,
+			inputUser:     marketplace.User{Username: "username", Name: "name", Password: "password", Status: true},
+			authBehavior: func(r *mock_service.MockAuthorization, user marketplace.User) {
+				r.EXPECT().GenerateToken(user.Username, user.Password).Return("64666873727468626378767a6668735baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", nil)
+				r.EXPECT().CreateUser(user).Return(1, nil)
+			},
+
+			headerName:  "Authorization",
+			headerValue: "Bearer token",
+			token:       "token",
+			id:          1,
+			tokenBehavior: func(r *mock_service.MockAuthorization, token string) {
+
+				r.EXPECT().ParseToken(token).Return(1, nil)
+				r.EXPECT().CheckStatus(1).Return(true, nil)
+			},
+
+			idBrand: 1,
+			mockBehavior: func(r *mock_service.MockBrands, id int) {
+				r.EXPECT().Delete(1).Return(nil)
+			},
+			uri:                  "/brands/1",
+			expectedStatusCode:   200,
+			expectedResponseBody: `%!s(bool=true){"status":"ok"}`,
+		},
+		{
+			name:          "Have not rights",
+			inputAuthBody: `{"username": "username", "name": "name", "password": "password"}`,
+			inputUser:     marketplace.User{Username: "username", Name: "name", Password: "password"},
+			authBehavior: func(r *mock_service.MockAuthorization, user marketplace.User) {
+				r.EXPECT().GenerateToken(user.Username, user.Password).Return("64666873727468626378767a6668735baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", nil)
+				r.EXPECT().CreateUser(user).Return(1, nil)
+			},
+
+			headerName:  "Authorization",
+			headerValue: "Bearer token",
+			token:       "token",
+			id:          1,
+			tokenBehavior: func(r *mock_service.MockAuthorization, token string) {
+
+				r.EXPECT().ParseToken(token).Return(1, nil)
+				r.EXPECT().CheckStatus(1).Return(false, nil)
+			},
+
+			idBrand: 1,
+			mockBehavior: func(r *mock_service.MockBrands, id int) {
+
+			},
+			uri:                  "/brands/1",
+			expectedStatusCode:   200,
+			expectedResponseBody: `%!s(bool=false){"message":"you do not have sufficient rights"}`,
+		},
+		{
+			name:          "Invalid id param",
+			inputAuthBody: `{"username": "username", "name": "name", "password": "password", "status":true}`,
+			inputUser:     marketplace.User{Username: "username", Name: "name", Password: "password", Status: true},
+			authBehavior: func(r *mock_service.MockAuthorization, user marketplace.User) {
+				r.EXPECT().GenerateToken(user.Username, user.Password).Return("64666873727468626378767a6668735baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", nil)
+				r.EXPECT().CreateUser(user).Return(1, nil)
+			},
+
+			headerName:  "Authorization",
+			headerValue: "Bearer token",
+			token:       "token",
+			id:          1,
+			tokenBehavior: func(r *mock_service.MockAuthorization, token string) {
+
+				r.EXPECT().ParseToken(token).Return(1, nil)
+				r.EXPECT().CheckStatus(1).Return(true, nil)
+			},
+
+			idBrand: 1,
+			mockBehavior: func(r *mock_service.MockBrands, id int) {
+
+			},
+			uri:                  "/brands/p",
+			expectedStatusCode:   200,
+			expectedResponseBody: `%!s(bool=true){"message":"invalid id param"}`,
+		},
+		{
+			name:          "Server service error",
+			inputAuthBody: `{"username": "username", "name": "name", "password": "password", "status":true}`,
+			inputUser:     marketplace.User{Username: "username", Name: "name", Password: "password", Status: true},
+			authBehavior: func(r *mock_service.MockAuthorization, user marketplace.User) {
+				r.EXPECT().GenerateToken(user.Username, user.Password).Return("64666873727468626378767a6668735baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", nil)
+				r.EXPECT().CreateUser(user).Return(1, nil)
+			},
+
+			headerName:  "Authorization",
+			headerValue: "Bearer token",
+			token:       "token",
+			id:          1,
+			tokenBehavior: func(r *mock_service.MockAuthorization, token string) {
+
+				r.EXPECT().ParseToken(token).Return(1, nil)
+				r.EXPECT().CheckStatus(1).Return(true, nil)
+			},
+
+			idBrand: 1,
+			mockBehavior: func(r *mock_service.MockBrands, id int) {
+				r.EXPECT().Delete(1).Return(errors.New(""))
+			},
+			uri:                  "/brands/1",
+			expectedStatusCode:   200,
+			expectedResponseBody: `%!s(bool=true){"message":"this brand not exists"}`,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			//Init Dependences
+			c := gomock.NewController(t)
+			defer c.Finish()
+
+			repoAuth := mock_service.NewMockAuthorization(c)
+			test.authBehavior(repoAuth, test.inputUser)
+			test.tokenBehavior(repoAuth, test.token)
+
+			repoBrand := mock_service.NewMockBrands(c)
+			test.mockBehavior(repoBrand, test.idBrand)
+
+			services := &service.Service{Authorization: repoAuth, Brands: repoBrand}
+			handler := Handler{services}
+
+			//Init routes
+			r := gin.New()
+			r.POST("/sign-up", handler.signUp)
+			r.POST("/sign-in", handler.signIn)
+			r.POST("/brands/:id", handler.userIdentity, func(ctx *gin.Context) {
+				status, _ := ctx.Get(userStatus)
+				ctx.String(200, "%s", status)
+			}, handler.deleteBrand)
+
+			//Create request
+			w := httptest.NewRecorder()
+			req := httptest.NewRequest("POST", "/sign-up",
+				bytes.NewBufferString(test.inputAuthBody))
+
+			// Make Request
+			r.ServeHTTP(w, req)
+
+			w = httptest.NewRecorder()
+			req = httptest.NewRequest("POST", "/sign-in",
+				bytes.NewBufferString(test.inputAuthBody))
+
+			r.ServeHTTP(w, req)
+
+			w = httptest.NewRecorder()
+			req = httptest.NewRequest("POST", test.uri, nil)
+			req.Header.Set(test.headerName, test.headerValue)
+
+			r.ServeHTTP(w, req)
+
+			assert.Equal(t, w.Code, test.expectedStatusCode)
+			assert.Equal(t, w.Body.String(), test.expectedResponseBody)
+		})
+	}
+}
+
 func TestHanler_createBrand(t *testing.T) {
 	type mockBehavior func(r *mock_service.MockBrands, brand marketplace.BrandsList)
 	type authBehavior func(r *mock_service.MockAuthorization, user marketplace.User)
