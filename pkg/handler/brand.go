@@ -42,11 +42,7 @@ func (h *Handler) getById(c *gin.Context) {
 }
 
 func (h *Handler) createBrand(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
 		return
@@ -74,11 +70,7 @@ func (h *Handler) createBrand(c *gin.Context) {
 }
 
 func (h *Handler) deleteBrand(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
 	}
@@ -101,11 +93,7 @@ func (h *Handler) deleteBrand(c *gin.Context) {
 }
 
 func (h *Handler) updateBrand(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
 	}
@@ -131,11 +119,7 @@ func (h *Handler) updateBrand(c *gin.Context) {
 }
 
 func (h *Handler) createBrandsImage(c *gin.Context) {
-	userStatus, err := checkStatus(c)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, "something went wrong!")
-		return
-	}
+	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
 	}

@@ -61,20 +61,20 @@ func (s *BrandService) CreateImage(id int, image_thumb *imageupload.Image) error
 func (s *BrandService) GetImage(id int) (string, error) {
 	_, err := s.repo.GetById(id)
 	if err != nil {
-		return "", err
+		return "", errors.New("have not this brand id")
 	}
 
-	imagePath := filepath.Join("./static/brands/", string(rune(id)))
+	imagePath := fmt.Sprintf("./static/brands/%d", id)
 
 	dir, err := os.Open(imagePath)
 	if err != nil {
-		return "", err
+		return "", errors.New("no folder found")
 	}
 	defer dir.Close()
 
 	files, err := dir.Readdirnames(-1)
 	if err != nil {
-		return "", err
+		return "", errors.New("no images found in the specified folder")
 	}
 
 	if len(files) > 0 {

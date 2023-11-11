@@ -33,6 +33,10 @@ CREATE TABLE baskets(
     product_id INTEGER REFERENCES products (id) on delete cascade not null
 );
 
+CREATE INDEX category_id_title ON categories (id, title);
+CREATE INDEX category_id ON categories(id);
+CREATE INDEX brands_id_title_description ON brands (id, title, description);
+CREATE INDEX brands_id ON brands(id);
 
 -- INSERT INTO brands (title) values ('Nike');
 -- INSERT INTO brands (title) values ('Adidas');
