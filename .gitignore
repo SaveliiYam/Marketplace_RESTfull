@@ -2,4 +2,4 @@
 .vscode
 .database
 static/
-configs/
+configs
