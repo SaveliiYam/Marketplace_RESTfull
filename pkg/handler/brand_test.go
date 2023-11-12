@@ -174,27 +174,27 @@ func TestHandler_deleteBrand(t *testing.T) {
 			}, handler.deleteBrand)
 
 			//Create request
-			w := httptest.NewRecorder()
-			req := httptest.NewRequest("POST", "/sign-up",
+			w1 := httptest.NewRecorder()
+			req1 := httptest.NewRequest("POST", "/sign-up",
 				bytes.NewBufferString(test.inputAuthBody))
 
 			// Make Request
-			r.ServeHTTP(w, req)
+			r.ServeHTTP(w1, req1)
 
-			w = httptest.NewRecorder()
-			req = httptest.NewRequest("POST", "/sign-in",
+			w2 := httptest.NewRecorder()
+			req2 := httptest.NewRequest("POST", "/sign-in",
 				bytes.NewBufferString(test.inputAuthBody))
 
-			r.ServeHTTP(w, req)
+			r.ServeHTTP(w2, req2)
 
-			w = httptest.NewRecorder()
-			req = httptest.NewRequest("POST", test.uri, nil)
-			req.Header.Set(test.headerName, test.headerValue)
+			w3 := httptest.NewRecorder()
+			req3 := httptest.NewRequest("POST", test.uri, nil)
+			req3.Header.Set(test.headerName, test.headerValue)
 
-			r.ServeHTTP(w, req)
+			r.ServeHTTP(w3, req3)
 
-			assert.Equal(t, w.Code, test.expectedStatusCode)
-			assert.Equal(t, w.Body.String(), test.expectedResponseBody)
+			assert.Equal(t, w3.Code, test.expectedStatusCode)
+			assert.Equal(t, w3.Body.String(), test.expectedResponseBody)
 		})
 	}
 }

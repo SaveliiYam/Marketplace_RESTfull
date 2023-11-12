@@ -89,13 +89,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 					product.POST("/image:id", h.createProductImage)
 					product.DELETE("/:id", h.deleteProduct)
 				}
-				basket := admin.Group("/basket", h.userIdentity)
-				{
-					basket.GET("/", h.getAllBasket)
-					basket.GET("/:id", h.getBasketById)
-					basket.POST("/", h.createBasket)
-					basket.DELETE("/:id", h.deleteBasket)
-				}
 			}
 		}
 	}
