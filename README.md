@@ -89,6 +89,7 @@
 
 ### Получение каталогов
 #### Можно получить каталоги либо по id, либо целиком
+Если запрашивать целиком: 
 * GET localhost:8000/api/v1/user/categories/
 * GET localhost:8000/api/v1/admin/categories/
 ```json
@@ -148,3 +149,85 @@
     ]
 }
 ```
+
+*GET localhost:8000/api/v1/user/basket
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "id": 2, //id корзинки
+            "user_id": 1, //id пользователя
+            "product_id": 1 //id продукта
+        }
+    ]
+}
+```
+
+Если запрашивать по id
+* GET localhost:8000/api/v1/user/categories/1
+* GET localhost:8000/api/v1/admin/categories/1
+```json
+{
+    "id": 1,
+    "title": "Летняя обувь"
+}
+```
+* GET localhost:8000/api/v1/user/brands/1
+* GET localhost:8000/api/v1/admin/brands/1
+```json
+{
+    "id": 1,
+    "title": "Nike",
+    "description": "Американский бренд"
+}
+```
+
+* GET localhost:8000/api/v1/user/products/1
+* GET localhost:8000/api/v1/admin/products/1
+```json
+{
+    "id": 1,
+    "title": "Air Jordan",
+    "description": "Летом может быть жарко",
+    "price": "10.20",
+    "brand": "1",
+    "category": "1"
+}
+```
+
+*GET localhost:8000/api/v1/user/basket/2
+```json
+{
+    "id": 2, //id корзинки
+    "user_id": 1, //id пользователя
+    "product_id": 1 //id продукта
+}
+
+```
+
+## Также имеется возможность загружать и получать по 1 фотографии для каждой категории, бренда и товара (в дальнейшем будет возможность добавления нескольких фото)
+
+### Получение изображения для продукта по id 
+* GET localhost:8000/api/v1/user/products/image/:id
+* GET localhost:8000/api/v1/admin/products/image/:id
+### Получение изображения для категории по id 
+* GET localhost:8000/api/v1/user/categories/image/:id
+* GET localhost:8000/api/v1/admin/categories/image/:id
+### Получение изображения для бренда по id 
+* GET localhost:8000/api/v1/user/brands/image/:id
+* GET localhost:8000/api/v1/admin/brands/image/:id
+
+### Добавление изображения для продукта по id 
+* POST localhost:8000/api/v1/user/products/image/:id
+* POST localhost:8000/api/v1/admin/products/image/:id
+### Добавление изображения для категории по id 
+* POST localhost:8000/api/v1/user/categories/image/:id
+* POST localhost:8000/api/v1/admin/categories/image/:id
+### Добавление изображения для бренда по id 
+* POST localhost:8000/api/v1/user/brands/image/:id
+* POST localhost:8000/api/v1/admin/brands/image/:id
