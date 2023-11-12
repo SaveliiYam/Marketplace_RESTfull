@@ -50,7 +50,7 @@ func (h *Handler) createCategories(c *gin.Context) {
 
 	var category marketplace.CategoriesList
 	if err := c.BindJSON(&category); err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, "invalid params")
+		NewErrorResponse(c, http.StatusBadRequest, "invalid param")
 		return
 	}
 
@@ -73,6 +73,7 @@ func (h *Handler) deleteCategory(c *gin.Context) {
 	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
@@ -83,7 +84,7 @@ func (h *Handler) deleteCategory(c *gin.Context) {
 
 	err = h.services.Categories.Delete(id)
 	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		NewErrorResponse(c, http.StatusInternalServerError, "this brand not exists")
 		return
 	}
 
@@ -96,6 +97,7 @@ func (h *Handler) updateCategory(c *gin.Context) {
 	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
@@ -122,6 +124,7 @@ func (h *Handler) createCategoriesImage(c *gin.Context) {
 	userStatus, _ := checkStatus(c)
 	if !userStatus {
 		NewErrorResponse(c, http.StatusForbidden, "you do not have sufficient rights")
+		return
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
