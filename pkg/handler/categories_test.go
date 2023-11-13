@@ -14,6 +14,68 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestHandler_getImage(t *testing.T) {
+	type mockBehavior func(r *mock_service.MockCategories, id int)
+
+	tests := []struct {
+		name string
+
+		idCategory           int
+		inputBodyUri         string
+		mockBehavior         mockBehavior
+		expectedStatusCode   int
+		expectedResponseBody string
+	}{
+		{
+			name:         "Invalid id",
+			idCategory:   1,
+			inputBodyUri: "/brands/image/p",
+			mockBehavior: func(r *mock_service.MockCategories, id int) {
+				//r.EXPECT().GetImage(id).Return("./static/categories/1/1.jpeg", nil)
+			},
+			expectedStatusCode:   400,
+			expectedResponseBody: `{"message":"invalid id param"}`,
+		},
+		{
+			name:         "Service Error",
+			idCategory:   1,
+			inputBodyUri: "/brands/image/1",
+			mockBehavior: func(r *mock_service.MockCategories, id int) {
+				r.EXPECT().GetImage(id).Return("", errors.New("something went wrong"))
+			},
+			expectedStatusCode:   404,
+			expectedResponseBody: `{"message":"something went wrong"}`,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			c := gomock.NewController(t)
+			defer c.Finish()
+
+			repoCategory := mock_service.NewMockCategories(c)
+			test.mockBehavior(repoCategory, test.idCategory)
+
+			services := &service.Service{Categories: repoCategory}
+			handler := Handler{services}
+
+			r := gin.New()
+			r.GET("/brands/image/:id", handler.getCategoriesImage)
+
+			// Create Request
+			w := httptest.NewRecorder()
+			req := httptest.NewRequest("GET", test.inputBodyUri, nil)
+
+			// Make Request
+			r.ServeHTTP(w, req)
+
+			// Assert
+			assert.Equal(t, w.Code, test.expectedStatusCode)
+			assert.Equal(t, w.Body.String(), test.expectedResponseBody)
+		})
+	}
+}
+
 func TestHandler_deleteCategories(t *testing.T) {
 	type mockBehavior func(r *mock_service.MockCategories, id int)
 	type authBehavior func(r *mock_service.MockAuthorization, user marketplace.User)
