@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"marketplace"
 	"marketplace/pkg/handler"
 	"marketplace/pkg/repository"
@@ -17,6 +18,7 @@ import (
 )
 
 func main() {
+	fmt.Println("hi")
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
 	if err := InitConfig(); err != nil {
